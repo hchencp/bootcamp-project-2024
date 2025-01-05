@@ -1,7 +1,14 @@
 import React from "react";
+import Comment from "@/components/Comment";
 
 type Props = {
   params: { slug: string };
+};
+
+type IComment = {
+  user: string;
+  comment: string;
+  time: Date;
 };
 
 async function getBlog(slug: string) {
@@ -40,6 +47,16 @@ export default async function Blog({ params: { slug } }: Props) {
       <p>{blog.description}</p>
       <p>Published on: {new Date(blog.date).toLocaleDateString()}</p>
       <img src={blog.image} alt={blog.name} />
+      <div className="comments-section">
+        <h3>Comments</h3>
+        {blog.comments && blog.comments.length > 0 ? (
+          blog.comments.map((comment: IComment, index: number) => (
+            <Comment key={index} comment={comment} />
+          ))
+        ) : (
+          <p>No comments yet.</p>
+        )}
+      </div>
     </div>
   );
 }
