@@ -2,6 +2,7 @@ import React from "react";
 import connectDB from "@/database/db";
 import BlogPreview from "@/components/blogPreview";
 import Blog from "@/database/blogSchema";
+import Link from "next/link";
 
 async function getBlogs() {
   await connectDB(); // function from db.ts before
@@ -29,14 +30,15 @@ const Blogs = async () => {
 
   return (
     <div>
-      {blogs.map((blog, index) => (
-        <BlogPreview
-          key={index}
-          title={blog.name}
-          description={blog.description}
-          image={blog.image}
-          date={new Date(blog.date).toLocaleDateString()}
-        />
+      {blogs.map((blog) => (
+        <Link key={blog._id} href={`/blogs/${blog.slug}`}>
+          <BlogPreview
+            title={blog.title}
+            description={blog.description}
+            image={blog.image}
+            date={new Date(blog.date).toLocaleDateString()}
+          />
+        </Link>
       ))}
     </div>
   );

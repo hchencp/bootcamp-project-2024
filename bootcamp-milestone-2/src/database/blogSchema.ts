@@ -7,6 +7,7 @@ type Blog = {
   description: string; // for preview
   image: string; // url for string in public
   date: Date;
+  slug: string;
 };
 
 // mongoose schema
@@ -16,6 +17,7 @@ const blogSchema = new Schema<Blog>({
   description: { type: String, required: true },
   image: { type: String, required: true },
   date: { type: Date, required: false, default: () => new Date() },
+  slug: { type: String, required: true, unique: true },
 });
 
 // defining the collection and model
