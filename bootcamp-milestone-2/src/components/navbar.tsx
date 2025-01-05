@@ -18,6 +18,9 @@ export default function Navbar() {
         <Link href="/resume" className={style.link}>
           Resume
         </Link>
+        <Link href="/portfolios" className={style.link}>
+          Portfolios
+        </Link>
         <Link href="/contact" className={style.link}>
           Contact Me
         </Link>
@@ -25,4 +28,3 @@ export default function Navbar() {
     </header>
   );
 }
-
