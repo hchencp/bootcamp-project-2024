@@ -3,7 +3,7 @@ import connectDB from "@/database/db";
 import BlogPreview from "@/components/blogPreview";
 import Blog from "@/database/blogSchema";
 import Link from "next/link";
-import Comment from "@/components/comment";
+import Comment from "@/components/Comment";
 
 type IComment = {
   user: string;
