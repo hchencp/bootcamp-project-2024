@@ -3,6 +3,13 @@ import connectDB from "@/database/db";
 import BlogPreview from "@/components/blogPreview";
 import Blog from "@/database/blogSchema";
 import Link from "next/link";
+import Comment from "@/components/comment";
+
+type IComment = {
+  user: string;
+  comment: string;
+  time: Date;
+};
 
 async function getBlogs() {
   await connectDB(); // function from db.ts before
@@ -31,14 +38,24 @@ const Blogs = async () => {
   return (
     <div>
       {blogs.map((blog) => (
-        <Link key={blog._id} href={`/blogs/${blog.slug}`}>
-          <BlogPreview
-            title={blog.title}
-            description={blog.description}
-            image={blog.image}
-            date={new Date(blog.date).toLocaleDateString()}
-          />
-        </Link>
+        <div key={blog._id} className="blog-container">
+          <Link href={`/blogs/${blog.slug}`}>
+            <BlogPreview
+              title={blog.name} // Use `name` instead of `title` to match the data
+              description={blog.description}
+              image={blog.image}
+              date={new Date(blog.date).toLocaleDateString()}
+            />
+          </Link>
+          <h3>Comments</h3>
+          {blog.comments && blog.comments.length > 0 ? (
+            blog.comments.map((comment: IComment, index: number) => (
+              <Comment key={index} comment={comment} />
+            ))
+          ) : (
+            <p>No comments yet.</p>
+          )}
+        </div>
       ))}
     </div>
   );
