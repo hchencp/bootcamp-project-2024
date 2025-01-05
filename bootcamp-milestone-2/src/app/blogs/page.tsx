@@ -1,34 +1,41 @@
 import React from "react";
+import connectDB from "@/database/db";
 import BlogPreview from "@/components/blogPreview";
+import Blog from "@/database/blogSchema";
 
-const blogs = [
-  {
-    key: 1,
-    name: "Green Thai Tea",
-    description:
-      "Discover the art of crafting the perfect Green Thai Tea blend.",
-    image: "/greenthaitea.webp", // Ensure this image is in your public directory
-    posted: "January 4, 2025",
-  },
-  {
-    keu: 2,
-    name: "Viet coffee",
-    description: "How to make viet coffee",
-    image: "/vietcoffee.jpg", // Ensure this image is in your public directory
-    posted: "January 4, 2025",
-  },
-];
+async function getBlogs() {
+  await connectDB(); // function from db.ts before
 
-const Blogs = () => {
+  try {
+    // query for all blogs and sort by date
+    const blogs = await Blog.find().sort({ date: -1 }).orFail();
+    // send a response as the blogs as the message
+    return blogs;
+  } catch (err) {
+    return null;
+  }
+}
+
+const Blogs = async () => {
+  const blogs = await getBlogs();
+
+  if (!blogs) {
+    return <p>Failed to load blogs.</p>;
+  }
+
+  if (blogs.length === 0) {
+    return <p>No blogs found.</p>;
+  }
+
   return (
     <div>
       {blogs.map((blog, index) => (
         <BlogPreview
-          key={index} // Added a unique key prop
+          key={index}
           title={blog.name}
           description={blog.description}
           image={blog.image}
-          date={blog.posted}
+          date={new Date(blog.date).toLocaleDateString()}
         />
       ))}
     </div>
