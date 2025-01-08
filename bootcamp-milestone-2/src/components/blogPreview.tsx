@@ -3,14 +3,21 @@ import Image from "next/image";
 import type { Blog } from "@/app/blogData";
 import style from "./blogPreview.module.css";
 
-export default function BlogPreview(props: Pick<Blog, 'title' | 'description' | 'image' | 'date'>) {
+type BlogPreviewProps = Pick<
+  Blog,
+  "title" | "description" | "image" | "date"
+> & {
+  imageAlt?: string;
+};
+
+export default function BlogPreview(props: BlogPreviewProps) {
   return (
     <div className={style.previewContainer}>
       <h3 className={style.title}>{props.title}</h3>
       <div className={style.content}>
         <Image
           src={props.image || "/defaultImage.jpg"}
-          alt={props.title || "Blog image"}
+          alt={props.imageAlt || `Image for ${props.title}`}
           width={500}
           height={500}
           className={style.image}
@@ -21,4 +28,3 @@ export default function BlogPreview(props: Pick<Blog, 'title' | 'description' | 
     </div>
   );
 }
-

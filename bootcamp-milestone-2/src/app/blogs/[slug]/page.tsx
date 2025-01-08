@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import Comment from "@/components/Comment";
 
 type Props = {
@@ -13,14 +14,15 @@ type IComment = {
 
 async function getBlog(slug: string) {
   try {
-    // This fetches the blog from an api endpoint that would GET the blog
     const res = await fetch(
-      `http://bootcamp-project-20241.vercel.app/api/Blogs/${slug}`,
+      `${
+        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+      }/api/Blogs/${slug}`,
       {
         cache: "no-store",
       }
     );
-    // This checks that the GET request was successful
+
     if (!res.ok) {
       throw new Error("Failed to fetch blog");
     }
@@ -29,15 +31,11 @@ async function getBlog(slug: string) {
   } catch (err: unknown) {
     console.log(`error: ${err}`);
     return null;
-    // `` are a special way of allowing JS inside a string
-    // Instead of "error: " + err, we can just do the above
-    // it is simular to formated strings in python --> f"{err}"
   }
 }
 
-export default async function Blog({ params: { slug } }: Props) {
-  console.log("Slug received in dynamic route:", slug); // Log the slug
-
+export default async function Blog({ params }: Props) {
+  const slug = (await Promise.resolve(params)).slug;
   const blog = await getBlog(slug);
 
   if (!blog) {
