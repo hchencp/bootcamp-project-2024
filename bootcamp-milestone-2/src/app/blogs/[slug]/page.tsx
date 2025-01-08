@@ -8,9 +8,7 @@ type Props = {
 async function getBlog(slug: string) {
   try {
     const res = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
-      }/api/Blogs/${slug}`,
+      `https://bootcamp-project-20241.vercel.app/api/Blogs/${slug}`,
       {
         cache: "no-store",
       }
